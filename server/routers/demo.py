@@ -4,6 +4,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from fastapi.responses import FileResponse
 from sqlalchemy.orm import Session
 
+from server.config import BASE_DIR
 from server.data.demo_scenarios import SCENARIOS
 from server.db import queries
 from server.db.database import get_db
@@ -16,7 +17,7 @@ router = APIRouter(tags=["demo"])
 
 @router.get("/demo/controller")
 def demo_controller():
-    return FileResponse("demo/index.html")
+    return FileResponse(BASE_DIR / "demo" / "index.html")
 
 
 @router.get("/demo/scenarios")

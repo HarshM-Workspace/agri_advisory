@@ -1,3 +1,12 @@
+import sys
+from pathlib import Path
+
+# Add project root to sys.path so imports like `from server.config ...` work
+# regardless of whether running from project root or from inside `server/`
+ROOT_DIR = Path(__file__).resolve().parent.parent
+if str(ROOT_DIR) not in sys.path:
+    sys.path.insert(0, str(ROOT_DIR))
+
 from contextlib import asynccontextmanager
 
 import uvicorn
@@ -6,7 +15,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import RedirectResponse
 from fastapi.staticfiles import StaticFiles
 
-from server.config import SERVER_HOST, SERVER_PORT
+from server.config import BASE_DIR, SERVER_HOST, SERVER_PORT
 from server.db.database import create_tables
 from server.routers import advisory, demo, farm, sensors
 
@@ -32,7 +41,7 @@ app.include_router(farm.router)
 app.include_router(sensors.router)
 app.include_router(advisory.router)
 app.include_router(demo.router)
-app.mount("/static", StaticFiles(directory="static"), name="static")
+app.mount("/static", StaticFiles(directory=str(BASE_DIR / "static")), name="static")
 
 
 @app.get("/")

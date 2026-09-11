@@ -1,7 +1,10 @@
 import os
+from pathlib import Path
 from dotenv import load_dotenv
 
-load_dotenv()
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+load_dotenv(BASE_DIR / ".env")
 
 
 def _to_bool(value: str, default: bool = False) -> bool:
@@ -24,8 +27,9 @@ AGMARKNET_API_URL = os.getenv(
 AGMARKNET_ENABLED = _to_bool(os.getenv("AGMARKNET_ENABLED"), True)
 
 SARVAM_API_KEY = os.getenv("SARVAM_API_KEY", "")
-DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./db/agriadvisor.db")
-IMAGE_STORAGE_PATH = os.getenv("IMAGE_STORAGE_PATH", "./static/")
+default_db_path = BASE_DIR / "db" / "agriadvisor.db"
+DATABASE_URL = os.getenv("DATABASE_URL", f"sqlite:///{default_db_path.as_posix()}")
+IMAGE_STORAGE_PATH = os.getenv("IMAGE_STORAGE_PATH", str(BASE_DIR / "static"))
 WEATHER_ENABLED = _to_bool(os.getenv("WEATHER_ENABLED"), True)
 MANDI_ENABLED = _to_bool(os.getenv("MANDI_ENABLED"), True)
 DEMO_CACHE_ENABLED = _to_bool(os.getenv("DEMO_CACHE_ENABLED"), True)

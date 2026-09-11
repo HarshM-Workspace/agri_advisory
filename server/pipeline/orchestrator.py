@@ -5,6 +5,7 @@ from pathlib import Path
 import httpx
 
 from server.config import (
+    BASE_DIR,
     DEMO_CACHE_ENABLED,
     OPENROUTER_API_KEY,
     OPENROUTER_APP_NAME,
@@ -25,7 +26,7 @@ def _infer_scenario_id(crop: str, days_elapsed: int) -> str | None:
 
 
 def _cache_path() -> Path:
-    return Path("cache") / "demo_cache.json"
+    return BASE_DIR / "cache" / "demo_cache.json"
 
 
 def _read_cache() -> dict:
